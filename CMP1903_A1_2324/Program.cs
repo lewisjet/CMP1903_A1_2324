@@ -25,17 +25,33 @@ namespace CMP1903_A1_2324
             var game = new Game();
             
             // Roll each dice in the game until the user tells the program not to.
-            // The RollDiceContinuously method calls every function in the Game class, bar the SumAllDice method.
-            game.RollDiceContinuously();
+            try
+            {
+                
+                // The RollDiceContinuously method calls every function in the Game class, bar the SumAllDice method.
+                game.RollDiceContinuously();
+                
+                // So every function is used in the Main method, the last sum calculated will be displayed at the end.
+                Console.WriteLine($"Final sum of dice of the game: {game.SumAllDice()}");
+            }
             
-            // So every function is used in the Main method, the last sum calculated will be displayed at the end.
-            Console.WriteLine($"Final sum of dice of the game: {game.SumAllDice()}");
+            // If the game has no dice and therefore nothing can be outputted, the exception will be caught.
+            catch (GameUsesNoDiceException)
+            {
+                Console.WriteLine("The game has no dice which can be rolled.");
+                Console.WriteLine("Because of this, the game will now terminate.");
+            }
             
-            // After that, the Testing class will be instantiated to ensure that everything worked correctly.
-            var testingClass = new Testing(game);
+            // Regardless of if the game threw an error, test it.
+            finally
+            {
+                // the Testing class is instantiated to ensure that everything is working correctly.
+                var testingClass = new Testing(game);
             
-            // Every test in the testing class will be run.
-            testingClass.RunTestingSuite();
+                // Every test in the testing class will be run.
+                testingClass.RunTestingSuite();
+            }
+            
         }
     }
 }

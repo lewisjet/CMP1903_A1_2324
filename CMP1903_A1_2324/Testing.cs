@@ -70,15 +70,40 @@ namespace CMP1903_A1_2324
         }
 
         /// <summary>
-        /// Runs each of the testing functions in the class.
+        /// Rolls every dice in the game instance, checking that each dice value is between 1 and 6.
+        /// </summary>
+        private void CheckThatGameRollsAreWithinRange()
+        {
+            // Roll every dice in the game, getting their results
+            var rolls = _gameTested.RollAllDice();
+            
+            // For each dice rolled, assert that the roll is between 1 and 6.
+            foreach (var roll in rolls)
+            {
+                Debug.Assert(roll > 0 && roll < 7);
+            }
+        }
+
+        /// <summary>
+        /// Runs each of the testing functions in the class, whilst providing error handling.
         /// </summary>
         public void RunTestingSuite()
         {
-            // Checks that the dice work as intended.
-            CheckDiceRollAsIntended();
-            
-            // Checks that the Game class can roll and sum correctly.
-            ValidateSumOfDice();
+            try
+            {
+                // Checks that the dice work as intended.
+                CheckDiceRollAsIntended();
+
+                // Checks that all rolls from the Game class are between 1 and 6.
+                CheckThatGameRollsAreWithinRange();
+
+                // Checks that the Game class can roll and sum correctly.
+                ValidateSumOfDice();
+            }
+            catch (GameUsesNoDiceException)
+            {
+                Debug.Fail("The game has no dice which can be rolled.");
+            }
         }
     }
 }
